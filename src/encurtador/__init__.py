@@ -18,4 +18,8 @@ def create_app(test_config: dict | None = None) -> Flask:
     os.makedirs(app.instance_path, exist_ok=True)
 
     db.init_app(app)
+
+    from .web import web
+
+    app.register_blueprint(web)
     return app
