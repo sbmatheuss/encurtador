@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block titulo %}Informações do link{% endblock %}
+{% block conteudo %}
+  <dl>
+    <dt>URL original</dt><dd><a href="{{ link.url }}">{{ link.url }}</a></dd>
+    <dt>Link curto</dt><dd><a href="{{ curto }}">{{ curto }}</a></dd>
+    <dt>Cliques</dt><dd>{{ link.cliques }}</dd>
+  </dl>
+{% endblock %}

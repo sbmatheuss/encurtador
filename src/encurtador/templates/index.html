@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block conteudo %}
+  {% if erro %}<p class="erro">{{ erro }}</p>{% endif %}
+
+  <form method="post">
+    <label>URL
+      <input name="url" value="{{ url or '' }}" placeholder="https://..." required>
+    </label>
+    <label>Código personalizado (opcional)
+      <input name="codigo" value="{{ codigo or '' }}" placeholder="5 a 30 letras ou números">
+    </label>
+    <button type="submit">Encurtar</button>
+  </form>
+
+  {% if curto %}
+    <div class="resultado">
+      <p>Seu link: <a href="{{ curto }}">{{ curto }}</a></p>
+      <p><a href="{{ info }}">Ver cliques</a></p>
+    </div>
+  {% endif %}
+{% endblock %}
