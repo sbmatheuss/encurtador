@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "encurtador"
+version = "0.1.0"
+description = "Encurtador de URLs local em Flask (projeto de aprendizado)"
+requires-python = ">=3.12"
+dependencies = ["flask"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+encurtador = ["schema.sql", "templates/*.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

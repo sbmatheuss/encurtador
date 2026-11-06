@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS links;
+
+CREATE TABLE links (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    codigo     TEXT    NOT NULL UNIQUE,
+    url        TEXT    NOT NULL,
+    cliques    INTEGER NOT NULL DEFAULT 0,
+    criado_em  TEXT    NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
