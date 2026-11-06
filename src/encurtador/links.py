@@ -116,3 +116,24 @@ def criar_link(conexao: sqlite3.Connection, url: str, codigo: str | None = None)
 def url_curta(base: str, codigo: str) -> str:
     """Monta o link curto completo, ex.: url_curta("http://localhost:5000/", "aB3x9k")."""
     return base.rstrip("/") + "/" + codigo
+
+
+def buscar_link(conexao: sqlite3.Connection, codigo: str) -> Link:
+    """Devolve o link do código, sem alterar os cliques. Lança LinkNaoEncontrado."""
+    linha = conexao.execute(
+        "SELECT codigo, url, cliques FROM links WHERE codigo = ?", (codigo,)
+    ).fetchone()
+    if linha is None:
+        raise LinkNaoEncontrado()
+    return Link(codigo=linha["codigo"], url=linha["url"], cliques=linha["cliques"])
+
+
+def registrar_clique(conexao: sqlite3.Connection, codigo: str) -> Link:
+    """Soma 1 clique ao link e devolve o link atualizado. Lança LinkNaoEncontrado."""
+    # A soma acontece dentro do banco ("cliques + 1"), então dois acessos
+    # simultâneos nunca se sobrescrevem.
+    cursor = conexao.execute("UPDATE links SET cliques = cliques + 1 WHERE codigo = ?", (codigo,))
+    conexao.commit()
+    if cursor.rowcount == 0:
+        raise LinkNaoEncontrado()
+    return buscar_link(conexao, codigo)

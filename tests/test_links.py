@@ -96,3 +96,37 @@ def test_gerar_codigo_desiste_apos_10_colisoes(conexao, monkeypatch):
 
 def test_url_curta():
     assert url_curta("http://localhost:5000/", "aB3x9k") == "http://localhost:5000/aB3x9k"
+
+
+# --- Tarefa 3: buscar link e registrar clique ---
+
+from encurtador.links import LinkNaoEncontrado, buscar_link, registrar_clique  # noqa: E402
+
+
+def test_buscar_link_existente(conexao):
+    criar_link(conexao, "https://exemplo.com", "abcde")
+    assert buscar_link(conexao, "abcde") == Link("abcde", "https://exemplo.com", 0)
+
+
+def test_buscar_diferencia_maiusculas(conexao):
+    criar_link(conexao, "https://exemplo.com", "AbCdE")
+    with pytest.raises(LinkNaoEncontrado, match="link não encontrado"):
+        buscar_link(conexao, "abcde")
+
+
+def test_registrar_clique_soma_um_por_acesso(conexao):
+    criar_link(conexao, "https://exemplo.com", "abcde")
+    registrar_clique(conexao, "abcde")
+    assert registrar_clique(conexao, "abcde").cliques == 2
+
+
+def test_buscar_nao_conta_clique(conexao):
+    criar_link(conexao, "https://exemplo.com", "abcde")
+    buscar_link(conexao, "abcde")
+    buscar_link(conexao, "abcde")
+    assert buscar_link(conexao, "abcde").cliques == 0
+
+
+def test_registrar_clique_em_codigo_inexistente(conexao):
+    with pytest.raises(LinkNaoEncontrado):
+        registrar_clique(conexao, "naoexiste")
