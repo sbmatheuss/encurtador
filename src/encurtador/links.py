@@ -56,9 +56,22 @@ class Link:
 def validar_url(url: str) -> str:
     """Devolve a URL sem espaços nas pontas, ou lança UrlInvalida."""
     url = url.strip()
-    partes = urlsplit(url)
-    if partes.scheme.lower() not in {"http", "https"} or not partes.netloc:
-        raise UrlInvalida("URL inválida: ela precisa começar com http:// ou https:// e ter um domínio")
+    mensagem = "URL inválida: ela precisa começar com http:// ou https:// e ter um domínio"
+
+    # urlsplit ignora silenciosamente \t, \r e \n, mas a URL salva continuaria
+    # com eles e quebraria o redirecionamento. Por isso recusamos antes.
+    if any(c.isspace() or not c.isprintable() for c in url):
+        raise UrlInvalida(mensagem)
+
+    try:
+        partes = urlsplit(url)
+        partes.port  # lança ValueError se a porta não for um número entre 0 e 65535
+    except ValueError:  # ex.: "https://[::1" ou "https://exemplo.com:abc"
+        raise UrlInvalida(mensagem) from None
+
+    # hostname (e não netloc): "http://:80" tem netloc ":80", mas nenhum domínio.
+    if partes.scheme.lower() not in {"http", "https"} or not partes.hostname:
+        raise UrlInvalida(mensagem)
     if len(url) > TAMANHO_MAXIMO_URL:
         raise UrlInvalida(f"URL muito longa: o máximo é {TAMANHO_MAXIMO_URL} caracteres")
     return url

@@ -130,3 +130,26 @@ def test_buscar_nao_conta_clique(conexao):
 def test_registrar_clique_em_codigo_inexistente(conexao):
     with pytest.raises(LinkNaoEncontrado):
         registrar_clique(conexao, "naoexiste")
+
+
+# --- Revisão final: URLs malformadas que urlsplit deixava passar ---
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https://exemplo.com/a\nSet-Cookie: x=1",  # quebra de linha (urlsplit a ignora)
+        "https://exemplo.com/a\r\nb",
+        "https://exemplo.com/a b",  # espaço no meio
+        "\x01https://exemplo.com",  # caractere de controle
+        "https://exemplo.com:abc",  # porta não numérica
+        "https://exemplo.com:99999",  # porta fora do intervalo
+        "https://[::1",  # IPv6 malformado (urlsplit lança ValueError)
+        "http://:80",  # sem domínio
+        "https://@",  # sem domínio
+    ],
+)
+def test_url_malformada_e_recusada_sem_salvar(conexao, url):
+    with pytest.raises(UrlInvalida):
+        criar_link(conexao, url)
+    assert conexao.execute("SELECT COUNT(*) FROM links").fetchone()[0] == 0
