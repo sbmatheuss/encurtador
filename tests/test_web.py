@@ -88,3 +88,9 @@ def test_info_escapa_html_da_url(app, client):
 def test_campo_codigo_tem_linha_de_ajuda(client):
     html = client.get("/").get_data(as_text=True)
     assert "Deixe vazio para gerar um código automático" in html
+
+
+def test_resultado_tem_botao_copiar_com_o_link(client):
+    html = client.post("/", data={"url": "https://exemplo.com", "codigo": "MeuLink1"}).get_data(as_text=True)
+    assert 'data-copiar="http://localhost/MeuLink1"' in html
+    assert ">Copiar</button>" in html

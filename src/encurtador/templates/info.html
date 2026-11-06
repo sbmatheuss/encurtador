@@ -2,8 +2,9 @@
 {% block titulo %}Informações do link{% endblock %}
 {% block conteudo %}
   <dl>
-    <dt>URL original</dt><dd><a href="{{ link.url }}">{{ link.url }}</a></dd>
+    <dt>Cliques</dt><dd class="cliques">{{ link.cliques }}</dd>
     <dt>Link curto</dt><dd><a href="{{ curto }}">{{ curto }}</a></dd>
-    <dt>Cliques</dt><dd>{{ link.cliques }}</dd>
+    <dt>URL original</dt><dd><a href="{{ link.url }}">{{ link.url }}</a></dd>
   </dl>
+  <a class="link-secundario" href="/">← Encurtar outra URL</a>
 {% endblock %}

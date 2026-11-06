@@ -4,7 +4,7 @@
 
   <form method="post">
     <label>URL
-      <input name="url" value="{{ url or '' }}" placeholder="https://..." required>
+      <input name="url" value="{{ url or '' }}" placeholder="https://www.python.org/downloads" required>
     </label>
     <label>Código personalizado (opcional)
       <input name="codigo" value="{{ codigo or '' }}" placeholder="ex.: python1" aria-describedby="ajuda-codigo">
@@ -13,13 +13,28 @@
       Deixe vazio para gerar um código automático. Para escolher o seu, use de 5 a 30 letras ou números
       (sem espaços, acentos ou símbolos) — ex.: <code>localhost:5000/python1</code>.
     </small>
-    <button type="submit">Encurtar</button>
+    <button type="submit" class="botao-principal">Encurtar</button>
   </form>
 
   {% if curto %}
     <div class="resultado">
-      <p>Seu link: <a href="{{ curto }}">{{ curto }}</a></p>
-      <p><a href="{{ info }}">Ver cliques</a></p>
+      <div class="resultado-linha">
+        <a href="{{ curto }}">{{ curto }}</a>
+        <button type="button" data-copiar="{{ curto }}">Copiar</button>
+      </div>
+      <a class="link-secundario" href="{{ info }}">Ver cliques →</a>
     </div>
+
+    <script>
+      // Copia o link curto para a área de transferência ao clicar em "Copiar".
+      document.querySelectorAll("[data-copiar]").forEach(function (botao) {
+        botao.addEventListener("click", function () {
+          navigator.clipboard.writeText(botao.dataset.copiar).then(function () {
+            botao.textContent = "Copiado!";
+            setTimeout(function () { botao.textContent = "Copiar"; }, 2000);
+          });
+        });
+      });
+    </script>
   {% endif %}
 {% endblock %}

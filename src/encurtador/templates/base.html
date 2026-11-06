@@ -2,19 +2,95 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block titulo %}Encurtador de URLs{% endblock %}</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }
-    label { display: block; margin-top: 1rem; }
-    input { width: 100%; padding: .4rem; box-sizing: border-box; }
-    button { margin-top: 1rem; padding: .4rem 1rem; }
-    .erro { color: #b00020; }
-    .ajuda { display: block; margin-top: .3rem; color: #555; }
-    .resultado { background: #eef6ee; padding: 1rem; margin-top: 1rem; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1rem;
+      color: #1f2937;
+    }
+    .cabecalho { text-align: center; color: white; margin-bottom: 1.5rem; }
+    .cabecalho a { color: white; text-decoration: none; }
+    .cabecalho h1 { margin: 0; font-size: 2rem; }
+    .cabecalho p { margin: .3rem 0 0; opacity: .85; }
+
+    .cartao {
+      width: 100%;
+      max-width: 32rem;
+      background: white;
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+    }
+
+    label { display: block; font-size: .9rem; font-weight: 600; margin-top: 1rem; }
+    label:first-child { margin-top: 0; }
+    input {
+      width: 100%;
+      margin-top: .35rem;
+      padding: .7rem .8rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, .2); }
+    .ajuda { display: block; margin-top: .35rem; font-size: .8rem; color: #6b7280; }
+    .ajuda code { background: #f3f4f6; padding: 0 .25rem; border-radius: 4px; }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: #6366f1;
+      color: white;
+      font-weight: 600;
+    }
+    button:hover { background: #4f46e5; }
+    .botao-principal { width: 100%; margin-top: 1.25rem; padding: .8rem; font-size: 1rem; }
+
+    .erro {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: .7rem .9rem;
+      margin: 0 0 1rem;
+    }
+
+    .resultado {
+      margin-top: 1.25rem;
+      background: #eef2ff;
+      border-radius: 8px;
+      padding: .9rem 1rem;
+    }
+    .resultado-linha { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+    .resultado a { color: #4338ca; font-weight: 600; word-break: break-all; }
+    .resultado button { padding: .4rem .8rem; font-size: .85rem; flex-shrink: 0; }
+    .link-secundario { display: inline-block; margin-top: .5rem; font-size: .85rem; color: #6b7280; }
+
+    dl { margin: 0; }
+    dt { font-size: .8rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: .03em; margin-top: 1rem; }
+    dt:first-child { margin-top: 0; }
+    dd { margin: .25rem 0 0; word-break: break-all; }
+    dd a { color: #4338ca; }
+    .cliques { font-size: 2.5rem; font-weight: 700; color: #6366f1; }
   </style>
 </head>
 <body>
-  <h1><a href="/">Encurtador de URLs</a></h1>
-  {% block conteudo %}{% endblock %}
+  <header class="cabecalho">
+    <h1><a href="/">🔗 Encurtador</a></h1>
+    <p>Transforme links longos em links curtos</p>
+  </header>
+  <main class="cartao">
+    {% block conteudo %}{% endblock %}
+  </main>
 </body>
 </html>
