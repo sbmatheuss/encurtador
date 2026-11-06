@@ -7,8 +7,12 @@
       <input name="url" value="{{ url or '' }}" placeholder="https://..." required>
     </label>
     <label>Código personalizado (opcional)
-      <input name="codigo" value="{{ codigo or '' }}" placeholder="5 a 30 letras ou números">
+      <input name="codigo" value="{{ codigo or '' }}" placeholder="ex.: python1" aria-describedby="ajuda-codigo">
     </label>
+    <small id="ajuda-codigo" class="ajuda">
+      Deixe vazio para gerar um código automático. Para escolher o seu, use de 5 a 30 letras ou números
+      (sem espaços, acentos ou símbolos) — ex.: <code>localhost:5000/python1</code>.
+    </small>
     <button type="submit">Encurtar</button>
   </form>
 

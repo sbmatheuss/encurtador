@@ -83,3 +83,8 @@ def test_info_escapa_html_da_url(app, client):
     criar(app, "https://exemplo.com/?q=<script>", "abcde")
     html = client.get("/info/abcde").get_data(as_text=True)
     assert "<script>" not in html and "&lt;script&gt;" in html
+
+
+def test_campo_codigo_tem_linha_de_ajuda(client):
+    html = client.get("/").get_data(as_text=True)
+    assert "Deixe vazio para gerar um código automático" in html
