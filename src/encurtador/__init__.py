@@ -19,7 +19,9 @@ def create_app(test_config: dict | None = None) -> Flask:
 
     db.init_app(app)
 
+    from .api import api
     from .web import web
 
     app.register_blueprint(web)
+    app.register_blueprint(api)
     return app
